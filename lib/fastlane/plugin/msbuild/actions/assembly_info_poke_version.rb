@@ -30,7 +30,7 @@ module Fastlane
           end
           out.close
         else
-          UI.error("You should supply rev_number or version_number but not botha")
+          UI.error("You should supply rev_number or version_number but not both")
           raise
         end
       end

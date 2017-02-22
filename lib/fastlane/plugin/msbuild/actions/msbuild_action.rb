@@ -7,13 +7,13 @@ module Fastlane
         solution = params[:solution]
 
         msbuild = params[:msbuild_path] ? File.join(params[:msbuild_path], "msbuild") : "msbuild"
-        command = "#{msbuild} #{solution}"
+        command = "#{msbuild} \"#{solution}\""
         params[:targets].each do |target|
-          command << " /t:#{target}"
+          command << " /t:\"#{target}\""
         end
-        command << " /p:Configuration=#{configuration}"
-        command << " /p:Platform=#{platform}" if platform
-        command << " /p:AndroidSdkDirectory=#{params[:android_home]}" if params[:android_home]
+        command << " /p:Configuration=\"#{configuration}\""
+        command << " /p:Platform=\"#{platform}\"" if platform
+        command << " /p:AndroidSdkDirectory=\"#{params[:android_home]}\"" if params[:android_home]
         params[:additional_arguments].each do |param|
           command << " #{param}"
         end
