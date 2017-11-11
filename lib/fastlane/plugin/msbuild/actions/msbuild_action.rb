@@ -7,6 +7,15 @@ module Fastlane
         solution = params[:solution]
 
         msbuild = params[:msbuild_path] ? File.join(params[:msbuild_path], "msbuild") : "msbuild"
+
+        unless params[:build_ipa].nil?
+          if params[:build_ipa] == true
+            build_ipa = "true"
+          else
+            build_ipa = "false"
+          end
+        end
+
         command = "#{msbuild} \"#{solution}\""
         params[:targets].each do |target|
           command << " /t:\"#{target}\""
@@ -14,6 +23,7 @@ module Fastlane
         command << " /p:Configuration=\"#{configuration}\""
         command << " /p:Platform=\"#{platform}\"" if platform
         command << " /p:AndroidSdkDirectory=\"#{params[:android_home]}\"" if params[:android_home]
+        command << " /p:BuildIpa=#{build_ipa}" if build_ipa
         params[:additional_arguments].each do |param|
           command << " #{param}"
         end
@@ -92,6 +102,17 @@ module Fastlane
             optional: true,
             type: String,
             default_value: nil
+          ),
+
+          FastlaneCore::ConfigItem.new(
+            key: :build_ipa,
+            env_name: 'FL_MSBUILD_BUILD_IPA',
+            description: "Should build ipa in iOS build",
+            optional: true,
+            is_string: false,
+            verify_block: proc do |value|
+              UI.user_error!("Invalid value #{value}. It must either be true or false") unless [true, false].include?(value)
+            end
           )
         ]
       end
