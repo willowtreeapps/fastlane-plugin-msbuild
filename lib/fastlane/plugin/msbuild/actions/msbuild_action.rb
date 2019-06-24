@@ -90,6 +90,7 @@ module Fastlane
 
           FastlaneCore::ConfigItem.new(
             key: :android_home,
+            optional: true,
             env_name: 'ANDROID_HOME',
             description: 'Location of the Anrdoid SDK (defaults to $ANDROID_HOME)',
             type: String
